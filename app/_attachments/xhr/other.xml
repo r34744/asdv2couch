@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<races>
+    <race>
+        <date>03-01-2013</date>
+        <teamname1>Lakeland</teamname1>
+        <teamname2>Milford</teamname2>
+        <teamname3>Holly</teamname3>
+        <teamname4>Highland</teamname4>
+        <teamname5>CC</teamname5>
+        <teamname6>DCD</teamname6>
+    </race>
+    <race>
+        <date>03-03-2013</date>
+        <teamname1>Lakeland</teamname1>
+        <teamname2>Milford</teamname2>
+        <teamname3>Holly</teamname3>
+        <teamname4>Highland</teamname4>
+        <teamname5>CC</teamname5>
+        <teamname6>DCD</teamname6>
+    </race>
+   
+</races>
+     
