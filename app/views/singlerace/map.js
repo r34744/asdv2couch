@@ -1,6 +1,7 @@
 function (doc) {
 	if (doc._id.substr(0, 5) === "date:"){
-  	emit(doc._id.substr(5),{
+  	emit(doc._id,{
+  	"time": doc.time,
   	"teamname1": doc.teamname1,
   	"team1race1": doc.team1race1,
   	"team1race2": doc.team1race2,

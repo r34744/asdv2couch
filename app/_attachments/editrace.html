@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+	<! -- Greg Koenig, ASD 1306 -->
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="X Race Day"/>
+		<meta name="keywords" content="snowboardcross,race day"/>
+		<meta NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>X Race Day</title>
+		<meta name="HandheldFriendly" content="True">
+		<meta name="MobileOptimized" content="320"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+		<!-- Mobile IE needs ClearType for smoothing fonts -->
+		<meta http-equiv="cleartype" content="on">
+	
+		</head>
+	
+	<body>
+		
+<!-- Edit Race -->
+		<div data-role="page" id="editrace" data-add-back-btn="true">
+			
+			<div data-role="header" data-position="fixed" >
+				<h1> <a href="index.html">X Race Day </a></h1>
+			</div>
+			
+			<div data-role="content">
+				
+				<form action="" id="editRaceForm" action="">
+					<div data-role="fieldcontain">
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="_id">Date*</label>
+								<input type="date" name="date" id="date"  data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="time">Time:*</label>
+								<input type="time" name="time" id="time"  data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="teamname1">Team #1*:</label>
+								<input type="text" name="teamname1" id="teamname1" placeholder="Please input a team name" data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a"><input type="text" name="team1race1" id="team1race1" placeholder="Race 1 Score" value="" />
+							</div>
+							<div class="ui-block-b"><input type="text" name="team1race2" id="team1race2" placeholder="Race 2 Score" value="" />
+							</div>
+						</div>
+						
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="teamname2">Team #2*:</label>
+								<input type="text" name="teamname2" id="teamname2" placeholder="Please input a team name" data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a"><input type="text" name="team2race1" id="team2race1" placeholder="Race 1 Score"  value=""/>
+							</div>
+							<div class="ui-block-b"><input type="text" name="team2race2" id="team2race2" placeholder="Race 2 Score" value="" />
+							</div>
+						</div>
+						
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="teamname3">Team #3*:</label>
+								<input type="text" name="teamname3" id="teamname3" placeholder="Please input a team name" data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a"><input type="text" name="team3race1" id="team3race1" placeholder="Race 1 Score" value="" />
+							</div>
+							<div class="ui-block-b"><input type="text" name="team3race2" id="team3race2" placeholder="Race 2 Score" value="" />
+							</div>
+						</div>
+						
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="teamname4">Team #4*:</label>
+								<input type="text" name="teamname4" id="teamname4" placeholder="Please input a team name" data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a"><input type="text" name="team4race1" id="team4race1" placeholder="Race 1 Score" value="" />
+							</div>
+							<div class="ui-block-b"><input type="text" name="team4race2" id="team4race2" placeholder="Race 2 Score" value="" />
+							</div>
+						</div>
+						
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="teamname5">Team #5*:</label>
+								<input type="text" name="teamname5" id="teamname1" placeholder="Please input a team name" data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a"><input type="text" name="team5race1" id="team5race1" placeholder="Race 1 Score" value="" />
+							</div>
+							<div class="ui-block-b"><input type="text" name="team5race2" id="team5race2" placeholder="Race 2 Score" value="" />
+							</div>
+						</div>
+					
+						<div class="ui-grid-solo">
+							<div class="ui-block-a"><label for="teamname6">Team #6*:</label>
+								<input type="text" name="teamname6" id="teamname6" placeholder="Please input a team name" data-clear-btn="true" class="required" value=""/>
+							</div>
+						</div>
+						<div class="ui-grid-a">
+							<div class="ui-block-a"><input type="text" name="team6race1" id="team6race1" placeholder="Race 1 Score" value="" />
+							</div>
+							<div class="ui-block-b"><input type="text" name="team6race2" id="team6race2" placeholder="Race 2 Score" value="" />
+							</div>
+						</div>
+					
+					</div>
+					<div data-role="fieldcontain">
+						<input type="submit" value="Submit" id="submitEditbutton" data-theme="b"/>
+					</div>
+					
+				
+					
+					
+				</form>	
+			</div>
+        
+		
+			<div data-role="footer" data-position="fixed" >
+				<div data-role="navbar">
+					<ul>
+						<li><a href="#main" >Home</a></li>
+						<li><a href="#AddNewRace" >Add New Race</a></li>
+						<li><a href="#PastRaces">Past Races</a></li>
+						<li><a href="#about">About</a></li>
+					</ul>
+				</div>   
+			</div>
+		</div>	
+
+		
+
+	</body>
+	
+</html>

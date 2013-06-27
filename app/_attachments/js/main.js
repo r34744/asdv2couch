@@ -8,48 +8,72 @@ $('#main').on('pageinit', function(){
 
 $('#AddNewRace').on('pageinit', function(){
 	
-    var teamNamesForm = $("#teamNamesForm");
-    teamNamesForm.validate({
-        submitHandler: function(key){
-            var data= teamNamesForm.serializeArray();
-            var html='';
-            var id=Math.floor(Math.random()*100000000);
-            localStorage.setItem(id, JSON.stringify(data));
-            alert("Teams are saved");
-        }
-     });
+    $("#submitbutton").on( "click", function( event ) {
+        event.preventDefault();
+        var document = {};
+        document._id = "date:" + $("input#date").val();
+        document.time = $("input#time").val();
+        document.teamname1 = $("input#teamname1").val();
+        document.team1race1 = $("input#team1race1").val();
+        document.team1race2 = $("input#team1race2").val();
+        document.teamname2 = $("input#teamname2").val();
+        document.team2race1 = $("input#team2race1").val();
+        document.team2race2 = $("input#team2race2").val();
+        document.teamname3 = $("input#teamname3").val();
+        document.team3race1 = $("input#team3race1").val();
+        document.team3race2 = $("input#team3race2").val();
+        document.teamname4 = $("input#teamname4").val();
+        document.team4race1 = $("input#team4race1").val();
+        document.team4race2 = $("input#team4race2").val();
+        document.teamname5 = $("input#teamname5").val();
+        document.team5race1 = $("input#team5race1").val();
+        document.team5race2 = $("input#team5race2").val();
+        document.teamname6 = $("input#teamname6").val();
+        document.team6race1 = $("input#team6race1").val();
+        document.team6race2 = $("input#team6race2").val();
+        $.couch.db("asdv2").saveDoc( document, {
+                success: function() {
+                    alert( "Saved." );
+                },
+                error: function() {
+                    alert( "Cannot save new document." );
+                 }
+        });
+        return false;
+    });
 
 });
 
 $('#PastRaces').on('pageinit', function(){
 	
-    $.ajax({
-    	"url": "_view/races",
-    	"dataType": "json",
-    	"success": function(data) {
+	$("#fromCouchUL").empty();
+	
+    $.couch.db("asdv2").view("app/races", {
+    	success: function(data) {
     		$("#fromCouch").append(
            		$("<ul>").attr("id", "fromCouchUL")
            	);
            	$("#fromCouchUL").attr("data-role", "listview");
            	$("#fromCouchUL").attr("data-inset", "true");
+           	
            	$.each(data.rows, function(index, date){
     			var date = (date.key);
             	$("#fromCouchUL").append(
            			$("<li>").append(
-           			$("<a>").attr("href", "pastrace.html?date="+date).text(date)
+           			$("<a>").attr("href", "pastrace.html?date:" + date).text(date)
            			)
            		);
        		});	
        	
-       	$("fromCouchUL").listview("refresh");
+       	
        	}
        	
-       	
+      //$('#fromCouchUL').listview('refresh'); 	
     });
     
     
     
-    
+/*    
     for (var i=0, j=localStorage.length; i<j; i++) {
         var key = localStorage.key(i);
         var value = localStorage.getItem(key);
@@ -115,144 +139,212 @@ $('#PastRaces').on('pageinit', function(){
     });
     
     
-   
+*/  
     
     
 });
 
-
-$(document).on('pageinit', '#pastrace', function(){
+$(document).on('pageinit', "#onerace", function(){
 		var urlData = $(this).data("url");
-		var urlParts = urlData.split("?");
-		var urlPairs = urlParts[1].split("&");
-		var urlValues = {};
-		for (var pair in urlPairs) {
-			var keyValue = urlPairs[pair].split("=");
-			var key = decodeURIComponent(keyValue[0]);
-			var value= decodeURIComponent(keyValue[1]);
-			urlValues[key] = value;
-		}
-		//console.log(urlValues);
-	
-	var racedate = urlValues["date"];
-	//console.log(racedate);
-	
-	$.couch.db("asdv2").view("app/singlerace", {
-        key: racedate,
-        success: function(data) {
-		$("#pastracecontent").empty();
-		//console.log(data);
-		 $.each(data.rows,function(index, race){
-           var date = (race.key);
-          	$("#pastracecontent").append(
-           		$("<h1>").text(racedate)
-           	);
-          	
-          	$("#pastracecontent").append(
-           		$("<table>").attr("id", "resulttable")
-           	);
-           $("#resulttable").attr("class", "table-stripe");
-           	
-           	$("#resulttable").append(
-           		$("<thead>").append(
-           			$("<tr>").attr("id", "teamtablehead").append(
-           				$("<th>").text("School")
+		var urlParts = urlData.split('?');
+		var raceKey = decodeURIComponent(urlParts[1]);
+		//raceKey returns "date:00-00-0000"  
+		//console.log(raceKey);
+		
+		$.couch.db("asdv2").view("app/singlerace", {
+        	key: raceKey,
+        	success: function(data) {
+				$("#pastracecontent").empty();
+					$.each(data.rows,function(index, race){
+           				var date = (race.key.substr(5));
            				
-           			)
-           		)
-           	);
+          				$("#pastracecontent").append(
+           					$("<h1>").text(date + ": " + race.value.time)
+           				);
+          	
+          				$("#pastracecontent").append(
+           					$("<table>").attr("id", "resulttable")
+           				);
+           				$("#resulttable").attr("class", "table-stripe");
+           	
+           				$("#resulttable").append(
+           					$("<thead>").append(
+           						$("<tr>").attr("id", "teamtablehead").append(
+           					$("<th>").text("School")
+           				
+           						)
+           					)
+           				);
             
-            $("#teamtablehead").append(
-           			$("<th>").text("Race #1")
-           	);
+            			$("#teamtablehead").append(
+           					$("<th>").text("Race #1")
+           				);
            					
-           	$("#teamtablehead").append(
-           			$("<th>").text("Race #2")
-           	);					
+           				$("#teamtablehead").append(
+           					$("<th>").text("Race #2")
+           				);					
             
             
-            $("#resulttable").append(
-           		$("<tr>").attr("id", "team1table").append(
-           			$("<th>").text(race.value.teamname1)
-           		)
-           	);
-            $("#resulttable").append(
-           		$("<tr>").attr("id", "team2table").append(
-           			$("<th>").text(race.value.teamname2)
-           		)
-           	);
-           	$("#resulttable").append(
-           		$("<tr>").attr("id", "team3table").append(
-           			$("<th>").text(race.value.teamname3)
-           		)
-           	);
-           $("#resulttable").append(
-           		$("<tr>").attr("id", "team4table").append(
-           			$("<th>").text(race.value.teamname4)
-           		)
-           	);
-           	$("#resulttable").append(
-           		$("<tr>").attr("id", "team5table").append(
-           			$("<th>").text(race.value.teamname5)
-           		)
-           	);
-           	$("#resulttable").append(
-           		$("<tr>").attr("id", "team6table").append(
-           			$("<th>").text(race.value.teamname6)
-           		)
-           	);
+            			$("#resulttable").append(
+           					$("<tr>").attr("id", "team1table").append(
+           						$("<th>").text(race.value.teamname1)
+           					)
+           				);
+            			$("#resulttable").append(
+           					$("<tr>").attr("id", "team2table").append(
+           						$("<th>").text(race.value.teamname2)
+           					)
+           				);
+			           	$("#resulttable").append(
+			           		$("<tr>").attr("id", "team3table").append(
+			           			$("<th>").text(race.value.teamname3)
+			           		)
+			           	);
+			           $("#resulttable").append(
+			           		$("<tr>").attr("id", "team4table").append(
+			           			$("<th>").text(race.value.teamname4)
+			           		)
+			           	);
+			           	$("#resulttable").append(
+			           		$("<tr>").attr("id", "team5table").append(
+			           			$("<th>").text(race.value.teamname5)
+			           		)
+			           	);
+			           	$("#resulttable").append(
+			           		$("<tr>").attr("id", "team6table").append(
+			           			$("<th>").text(race.value.teamname6)
+			           		)
+			           	);
            	
-          	$("#team1table").append(
-           		$("<td>").text(race.value.team1race1)
-           	);
-           	$("#team1table").append(
-           		$("<td>").text(race.value.team1race2)
-           	);
+			          	$("#team1table").append(
+			           		$("<td>").text(race.value.team1race1)
+			           	);
+			           	$("#team1table").append(
+			           		$("<td>").text(race.value.team1race2)
+			           	);
            	
-           	$("#team2table").append(
-           		$("<td>").text(race.value.team2race1)
-           	);
-           	$("#team2table").append(
-           		$("<td>").text(race.value.team2race2)
-           	);
-           	
-           	$("#team3table").append(
-           		$("<td>").text(race.value.team3race1)
-           	);
-           	$("#team3table").append(
-           		$("<td>").text(race.value.team3race2)
-           	);
-           	
-           	$("#team4table").append(
-           		$("<td>").text(race.value.team4race1)
-           	);
-           	$("#team4table").append(
-           		$("<td>").text(race.value.team4race2)
-           	);
-           	
-           	$("#team5table").append(
-           		$("<td>").text(race.value.team5race1)
-           	);
-           	$("#team5table").append(
-           		$("<td>").text(race.value.team5race2)
-           	);
-           	
-           	$("#team6table").append(
-           		$("<td>").text(race.value.team6race1)
-           	);
-           	$("#team6table").append(
-           		$("<td>").text(race.value.team6race2)
-           	);
-       	});
+			           	$("#team2table").append(
+			           		$("<td>").text(race.value.team2race1)
+			           	);
+			           	$("#team2table").append(
+			           		$("<td>").text(race.value.team2race2)
+			           	);
+			           	
+			           	$("#team3table").append(
+			           		$("<td>").text(race.value.team3race1)
+			           	);
+			           	$("#team3table").append(
+			           		$("<td>").text(race.value.team3race2)
+			           	);
+			           	
+			           	$("#team4table").append(
+			           		$("<td>").text(race.value.team4race1)
+			           	);
+			           	$("#team4table").append(
+			           		$("<td>").text(race.value.team4race2)
+			           	);
+			           	
+			           	$("#team5table").append(
+			           		$("<td>").text(race.value.team5race1)
+			           	);
+			           	$("#team5table").append(
+			           		$("<td>").text(race.value.team5race2)
+			           	);
+			           	
+			           	$("#team6table").append(
+			           		$("<td>").text(race.value.team6race1)
+			           	);
+			           	$("#team6table").append(
+			           		$("<td>").text(race.value.team6race2)
+			           	);
+			           	
+			           	$("#pastracecontent").append(
+           					$("<a>").append(
+           					$("<a>").attr("href", "editrace.html?date:" + date).text("Edit")
+           					)
+           				);
+			           	
+       			});
+       		}	
        	//$("#pastracecontent").listview("refresh");
-       	}
        });
-
 });
 
 
+$(document).on('pageinit', "#editrace", function(){
+		var urlData = $(this).data("url");
+		var urlParts = urlData.split('?');
+		var raceKey = decodeURIComponent(urlParts[1]);
+		//raceKey returns "date:00-00-0000"  
+		//console.log(raceKey);
+		$.couch.db("asdv2").view("app/singlerace", {
+        	key: raceKey,
+        	success: function(data) {
+				$.each(data.rows,function(index, race){
+           				var date = (race.key.substr(5));
+           				
+           				$("#date").val(date);
+          				$("#time").val(race.value.time);
+          				$("#teamname1").val(race.value.teamname1);
+          				$("#team1race1").val(race.value.team1race1);
+          				$("#team1race2").val(race.value.team1race2);
+          				$("#teamname2").val(race.value.teamname2);
+          				$("#team2race1").val(race.value.team2race1);
+          				$("#team2race2").val(race.value.team2race2);
+          				$("#teamname3").val(race.value.teamname3);
+          				$("#team3race1").val(race.value.team3race1);
+          				$("#team3race2").val(race.value.team3race2);
+          				$("#teamname4").val(race.value.teamname4);
+          				$("#team4race1").val(race.value.team4race1);
+          				$("#team4race2").val(race.value.team4race2);
+          				$("#teamname5").val(race.value.teamname5);
+          				$("#team5race1").val(race.value.team5race1);
+          				$("#team5race2").val(race.value.team5race2);
+			           	$("#teamname6").val(race.value.teamname6);
+          				$("#team6race1").val(race.value.team6race1);
+          				$("#team6race2").val(race.value.team6race2);
+          				
+       			});
+       		}
+      	});
+		
+	$("#submitEditbutton").on( "click", function( event ) {
+        event.preventDefault();
+        var document = {};
+        document._id = "date:" + $("input#date").val();
+        document.time = $("input#time").val();
+        document.teamname1 = $("input#teamname1").val();
+        document.team1race1 = $("input#team1race1").val();
+        document.team1race2 = $("input#team1race2").val();
+        document.teamname2 = $("input#teamname2").val();
+        document.team2race1 = $("input#team2race1").val();
+        document.team2race2 = $("input#team2race2").val();
+        document.teamname3 = $("input#teamname3").val();
+        document.team3race1 = $("input#team3race1").val();
+        document.team3race2 = $("input#team3race2").val();
+        document.teamname4 = $("input#teamname4").val();
+        document.team4race1 = $("input#team4race1").val();
+        document.team4race2 = $("input#team4race2").val();
+        document.teamname5 = $("input#teamname5").val();
+        document.team5race1 = $("input#team5race1").val();
+        document.team5race2 = $("input#team5race2").val();
+        document.teamname6 = $("input#teamname6").val();
+        document.team6race1 = $("input#team6race1").val();
+        document.team6race2 = $("input#team6race2").val();
+        $.couch.db("asdv2").saveDoc( document, {
+                success: function() {
+                    alert( "Saved." );
+                },
+                error: function() {
+                    alert( "Cannot save new document." );
+                 }
+        });
+        return false;
+    });
 
 
+
+});
 
 
 
